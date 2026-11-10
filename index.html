@@ -107,7 +107,13 @@ svg{display:block;overflow:visible}
 .cloud{animation:drift 46s linear infinite}
 .cloud.c2{animation-duration:70s}
 @keyframes drift{from{transform:translateX(-90px)}to{transform:translateX(360px)}}
-#hero{transition:transform .5s ease-in-out}
+.pix{image-rendering:-webkit-optimize-contrast;image-rendering:crisp-edges;image-rendering:pixelated}
+.stage{position:relative;aspect-ratio:320/200;container-type:inline-size;overflow:hidden;background:#0d0a24}
+.stage .bg{position:absolute;inset:0;width:100%;height:100%}
+#hero{position:absolute;width:0;height:0;transition:left .5s ease-in-out,top .5s ease-in-out}
+#hero .spr{position:absolute}
+#hero .spr img{width:100%;height:auto;display:block}
+#hero .f2{display:none}
 .bob{animation:bob 1.1s ease-in-out infinite}
 @keyframes bob{50%{transform:translateY(-1.5px)}}
 .tail{transform-box:fill-box;transform-origin:0% 100%;animation:wag .5s ease-in-out infinite alternate}
@@ -139,7 +145,7 @@ svg{display:block;overflow:visible}
 /* Equipo */
 .team{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;align-items:end;margin-top:4px}
 .pet{display:grid;justify-items:center;gap:4px;text-align:center;font-size:12px;line-height:1.1;color:var(--muted);min-width:0}
-.pet svg{width:100%;max-width:78px;height:auto}
+.pet img{width:100%;max-width:78px;height:auto}
 .bubble{position:relative;background:var(--cream);color:var(--ink);border-radius:14px;padding:10px 14px;font-weight:500;font-size:16px;margin-bottom:14px}
 .bubble::after{content:"";position:absolute;bottom:-9px;width:18px;height:18px;background:var(--cream);transform:rotate(45deg);border-radius:3px}
 .bubble b{color:var(--terra)}
@@ -200,14 +206,14 @@ nav.tabs button.plus .ic{background:var(--red);border:2px solid #000;border-radi
 .price{font-family:var(--f-disp);font-size:12px;color:var(--coin);display:flex;align-items:center;gap:6px;margin-top:4px}
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
 .cell{background:var(--ink);border-radius:14px;padding:10px 4px;display:grid;justify-items:center;gap:6px;text-align:center;font-size:12px;line-height:1.15;min-width:0}
-.cell.off svg{filter:brightness(0) opacity(.35)}
+.cell.off img{filter:brightness(0) opacity(.35)}
 .cell.off span{opacity:.45}
 .cell .cnt{font-family:var(--f-disp);font-size:9px;color:var(--coin)}
 .meds{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
 .med{display:grid;grid-template-columns:36px 1fr;gap:10px;align-items:center;background:var(--ink);padding:10px;border-radius:14px;min-width:0}
 .med b{font-size:15px;display:block;font-weight:600}
 .med span{font-size:13px;color:var(--muted);display:block}
-.med.off{opacity:.45}.med.off svg{filter:grayscale(1) brightness(.6)}
+.med.off{opacity:.45}.med.off img{filter:grayscale(1) brightness(.6)}
 
 /* Diario */
 .kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:24px}
@@ -260,16 +266,28 @@ nav.tabs button.plus .ic{background:var(--red);border:2px solid #000;border-radi
 .ans{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;min-height:52px;margin:6px 0 14px}
 .ans span{width:38px;height:46px;border-bottom:4px solid var(--coin);font-family:var(--f-disp);font-size:24px;display:grid;place-items:center}
 .tiles{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
-.tiles button{width:44px;height:48px;border:3px solid var(--ink);background:var(--coin);color:var(--ink);border-radius:10px;font-family:var(--f-disp);font-size:22px;box-shadow:0 4px 0 var(--ink)}
+.tiles button{width:36px;height:46px;font-size:19px!important;border:3px solid var(--ink);background:var(--coin);color:var(--ink);border-radius:10px;font-family:var(--f-disp);font-size:22px;box-shadow:0 4px 0 var(--ink)}
 .tiles button:disabled{opacity:.25}
 .shake{animation:shake .4s}
 @keyframes shake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
 .memo{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.memo.m5{grid-template-columns:repeat(5,1fr);gap:6px}
+.memo.m5 button{padding:3px;border-radius:10px}
+.s9{display:grid;grid-template-columns:repeat(9,1fr);border:3px solid var(--cream);border-radius:10px;overflow:hidden;max-width:360px;margin:0 auto}
+.s9 button{aspect-ratio:1;border:0;border-right:1px solid var(--panel2);border-bottom:1px solid var(--panel2);background:var(--ink);font-family:var(--f-body);font-weight:700;font-size:19px;color:var(--sky);padding:0}
+.s9 button.fix{color:var(--cream);background:#16113a}
+.s9 button.same{background:#2d2766}
+.s9 button.sel{background:var(--coin);color:var(--ink)}
+.s9 button.bad{color:var(--red)}
+.s9 button.br{border-right:3px solid var(--cream)}
+.s9 button.bb{border-bottom:3px solid var(--cream)}
+.pad9{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:14px}
+.pad9 button{border:3px solid var(--ink);background:var(--panel2);border-radius:12px;padding:10px 0;font-family:var(--f-body);font-weight:700;font-size:20px;box-shadow:0 4px 0 var(--ink)}
 .memo button{aspect-ratio:3/4;border:3px solid var(--ink);border-radius:12px;background:var(--terra);box-shadow:0 4px 0 var(--ink);padding:4px;display:grid;place-items:center;
   background-image:linear-gradient(135deg,var(--ochre) 25%,transparent 25%),linear-gradient(225deg,var(--ochre) 25%,transparent 25%);background-size:16px 16px}
 .memo button.up{background:var(--cream)}
 .memo button.ok{background:#bff0cf;opacity:.85}
-.memo svg{width:100%;height:auto;max-height:100%}
+.memo img{width:100%;height:auto;max-height:100%}
 .choices{display:grid;gap:10px;margin-top:14px}
 .riddle{font-size:20px;font-weight:500;text-align:center;line-height:1.35;padding:6px 4px}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
@@ -283,7 +301,7 @@ nav.tabs button.plus .ic{background:var(--red);border:2px solid #000;border-radi
 <script>
 /* ============ CONFIG ============ */
 const DEMO = false;                         // true = vista previa con datos de ejemplo
-const KEY = DEMO ? 'paola-quest-demo4' : 'paola-quest-v1';
+const KEY = DEMO ? 'paola-quest-demo6' : 'paola-quest-v1';
 const RUTINA_URL = 'https://marketingkham-cpu.github.io/p-8eg9p5cdnmcv/';
 const XPL = 50, LPW = 10, NW = 8;
 
@@ -303,11 +321,25 @@ const hashS=s=>[...s].reduce((a,c)=>(a*31+c.charCodeAt(0))%1000003,7);
 
 /* ============ ILUSTRACIONES ============ */
 const K='#2b1d2f';
-const sv=(vw,vh,inner,w,cls='art')=>`<svg class="${cls}" viewBox="0 0 ${vw} ${vh}" width="${w}" height="${Math.round(w*vh/vw)}" aria-hidden="true">${inner}</svg>`;
+const svVec=(vw,vh,inner,w,cls='art')=>`<svg class="${cls}" viewBox="0 0 ${vw} ${vh}" width="${w}" height="${Math.round(w*vh/vw)}" aria-hidden="true">${inner}</svg>`;
+/* Pixel art fino: la ilustración se dibuja en un lienzo chiquito y se agranda sin suavizar */
+const PIX={},PEND={};
+const hk=str=>{let h=2166136261;for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619)}return (h>>>0).toString(36)+'_'+str.length};
+function rasterize(key,vw,vh,inner,rw){if(PIX[key]||PEND[key])return;const rh=Math.max(1,Math.round(rw*vh/vw));
+  const doc=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${vw} ${vh}" width="${rw}" height="${rh}" shape-rendering="crispEdges">${inner}</svg>`;
+  const src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(doc);PEND[key]=1;
+  const img=new Image();img.onload=()=>{let url=src;try{const c=document.createElement('canvas');c.width=rw;c.height=rh;const x=c.getContext('2d');x.imageSmoothingEnabled=false;x.drawImage(img,0,0,rw,rh);
+      const d=x.getImageData(0,0,rw,rh),a=d.data;for(let i=3;i<a.length;i+=4)a[i]=a[i]<100?0:255;x.putImageData(d,0,0);url=c.toDataURL()}catch(e){}
+    PIX[key]=url;delete PEND[key];fillPix(document)};
+  img.onerror=()=>{PIX[key]=src;delete PEND[key];fillPix(document)};img.src=src}
+function fillPix(root){(root||document).querySelectorAll('img[data-pk]').forEach(i=>{const u=PIX[i.dataset.pk];if(u&&i.getAttribute('src')!==u)i.src=u})}
+function pixImg(vw,vh,inner,w,rw,cls='art',style=''){const key=hk(vw+'x'+vh+'@'+rw+inner);rasterize(key,vw,vh,inner,rw);
+  return `<img class="${cls} pix" data-pk="${key}" ${PIX[key]?`src="${PIX[key]}"`:''} width="${w}" height="${Math.round(w*vh/vw)}" alt="" style="${style}" draggable="false">`}
+const sv=(vw,vh,inner,w,cls='art')=>pixImg(vw,vh,inner,w,Math.max(16,Math.round(w/1.45)),cls);
 const COIN_I=`<circle cx="12" cy="12.6" r="11" fill="#c98a12"/><circle cx="12" cy="11.4" r="10.4" fill="#ffcc33" stroke="#7a4a00" stroke-width=".8"/><circle cx="12" cy="11.4" r="6.6" fill="none" stroke="#e0a020" stroke-width="1.8"/><rect x="10.6" y="6.4" width="2.8" height="10" rx="1.4" fill="#fff6c8"/>`;
 const coin=w=>sv(24,24,COIN_I,w);
 const flame=w=>sv(24,24,`<path d="M12 1.5C14 7 20 9 19.2 15C18.6 20 15.2 22.5 12 22.5C8 22.5 4.8 19.6 4.8 15.4C4.8 12 7.8 10 8.6 6.8C10 8.8 10.6 10 11 11.2C12 8 12.2 5 12 1.5Z" fill="#ff4d3d"/><path d="M12 10C13.2 13 16 14.2 15.6 17.6C15.2 20 13.6 21.2 12 21.2C10 21.2 8.4 19.6 8.4 17.6C8.4 15 11 14 12 10Z" fill="#ffcc33"/>`,w);
-const gear=w=>sv(24,24,`<g fill="currentColor">${[0,45,90,135].map(a=>`<rect x="10" y="1.5" width="4" height="21" rx="1.5" transform="rotate(${a} 12 12)"/>`).join('')}<circle cx="12" cy="12" r="7.5"/></g><circle cx="12" cy="12" r="3.2" fill="#0d0a24"/>`,w,'');
+const gear=w=>svVec(24,24,`<g fill="currentColor">${[0,45,90,135].map(a=>`<rect x="10" y="1.5" width="4" height="21" rx="1.5" transform="rotate(${a} 12 12)"/>`).join('')}<circle cx="12" cy="12" r="7.5"/></g><circle cx="12" cy="12" r="3.2" fill="#0d0a24"/>`,w,'');
 
 /* Paola (personaje) */
 function heroArt(frame){const H='#6b331a',S='#f6c39b',P='#ff5c8a',B='#3d52d5';
@@ -508,83 +540,126 @@ const ACH=[
  {id:'c24',n:'Álbum completo',d:'Los 24 objetos',ok:s=>s.uniq>=24}];
 const achMask=(i,w)=>mask(i%3,i,w);
 
-/* ============ JUEGO MENTAL DEL DÍA ============ */
-const GAME_COINS=20;
+/* ============ JUEGO MENTAL DEL DÍA (nivel adulto) ============ */
+const GAME_COINS=30;
 const GAMES=[
- {id:'sudoku',n:'Mini sudoku',d:'Llena con 1, 2, 3 y 4. Sin repetir en fila, columna ni cuadro.'},
- {id:'acertijo',n:'Acertijo',d:'Léelo con calma y elige la respuesta.'},
- {id:'palabra',n:'Palabra revuelta',d:'Ordena las letras para formar la palabra.'},
- {id:'memo',n:'Memorama',d:'Encuentra las parejas de tu equipo y tus máscaras.'}];
+ {id:'sudoku',n:'Sudoku',d:'Sudoku clásico 9×9. Del 1 al 9 sin repetir en fila, columna ni cuadro.'},
+ {id:'acertijo',n:'Acertijo de lógica',d:'Ojo: casi todos tienen trampa. Piénsalo dos veces.'},
+ {id:'palabra',n:'Palabra revuelta',d:'Ordena las letras. Son palabras largas.'},
+ {id:'memo',n:'Memorama de máscaras',d:'10 pares de máscaras muy parecidas. Fíjate en los detalles.'},
+ {id:'cifras',n:'Cifras',d:'Combina los números con + − × ÷ hasta llegar al número exacto. Puedes no usarlos todos.'}];
 const gameOf=d=>GAMES[hashS(d+'g')%GAMES.length];
 function rng(seed){let a=seed>>>0;return()=>{a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
 const shuffle=(arr,R)=>{const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(R()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 const RIDDLES=[
- ['Tengo agujas y no sé coser, tengo números y no sé leer.','El reloj',['La calculadora','El calendario']],
- ['Vuelo sin alas, silbo sin boca, empujo sin manos y nadie me ve.','El viento',['La lluvia','Un pájaro']],
- ['Cuanto más le quitas, más grande se hace.','Un agujero',['Una montaña','Un globo']],
- ['Tengo dientes y no muerdo. Me usas cada mañana en el cabello.','El peine',['El cepillo de dientes','La tijera']],
- ['Mientras más seca, más mojada está.','La toalla',['La esponja','La ropa tendida']],
- ['Si me nombras, desaparezco.','El silencio',['La sombra','Un secreto']],
- ['Despacito camina, su casa lleva encima y deja un caminito brillante.','El caracol',['La tortuga','El cangrejo']],
- ['Tengo cuello y no cabeza, tengo brazos y no manos.','La camisa',['El suéter de Hanna','La silla']],
- ['Te sigo a todas partes cuando hay sol, pero de noche me escondo.','Tu sombra',['Tu perrita','La luna']],
- ['Tengo teclas pero no abro puertas.','El piano',['El llavero','La cerradura']],
- ['Tengo hojas y no soy árbol, tengo lomo y no soy caballo.','El libro',['El cuaderno de dibujo','La planta']],
- ['Si caminas 15 minutos al día durante 4 días, ¿cuántos minutos caminaste?','60 minutos',['45 minutos','75 minutos']],
- ['Una perrita viejita duerme 14 horas al día. ¿Cuántas horas está despierta?','10 horas',['8 horas','12 horas']],
- ['Paola tiene 2 perritas y 2 gatitos. ¿Cuántas patitas hay en total?','16 patitas',['12 patitas','8 patitas']],
- ['¿Qué se rompe sin tocarlo?','Una promesa',['Un vaso','Un hilo']],
- ['Doy vueltas y vueltas y nunca me mareo. Si me paro, la canción se acaba.','El disco',['La lavadora','El trompo']],
- ['En el mapa hay 8 mundos con 10 niveles cada uno. ¿Cuántos niveles son?','80 niveles',['18 niveles','100 niveles']]];
-const WORDS=[['CAMINAR','Lo que haces con tus tenis'],['ESPALDA','La parte que estás cuidando'],['CALMA','Lo contrario de prisa'],['BAILAR','Moverte al ritmo de la música'],
- ['PERRITA','Hanna es una'],['MASCARA','Tus medallas son una'],['DESCANSO','También da puntos'],['MACETA','Donde vive Hanna'],['SONRISA','Se pone en la cara cuando estás feliz'],
- ['GATITO','Hace miau'],['CASTILLO','Está al final de cada mundo'],['ESTRELLA','Brilla en el Castillo Estelar'],['MONEDA','Juntas muchas para tus premios'],['RESPIRAR','Hazlo profundo antes de empezar'],['ALEGRIA','Lo que sientes al llegar a tu meta']];
+ ['Un bate y una pelota cuestan $110 en total. El bate cuesta $100 más que la pelota. ¿Cuánto cuesta la pelota?','$5',['$10','$1','$55'],'Si la pelota costara $10, el bate costaría $110 y juntos $120. Con $5: bate $105 + pelota $5 = $110.'],
+ ['Un nenúfar duplica su tamaño cada día. Tarda 48 días en cubrir todo el lago. ¿Cuántos días tarda en cubrir la mitad?','47 días',['24 días','36 días','46 días'],'Si se duplica cada día, un día antes de cubrirlo todo cubría la mitad.'],
+ ['5 máquinas hacen 5 piezas en 5 minutos. ¿Cuánto tardan 100 máquinas en hacer 100 piezas?','5 minutos',['100 minutos','20 minutos','50 minutos'],'Cada máquina hace una pieza en 5 minutos, sin importar cuántas máquinas haya.'],
+ ['¿Qué número sigue? 2, 6, 12, 20, 30, …','42',['40','36','44'],'Las diferencias son 4, 6, 8, 10… la siguiente es 12: 30 + 12 = 42.'],
+ ['Un reloj marca las 3:15. ¿Qué ángulo forman las manecillas?','7.5°',['0°','15°','5°'],'La aguja corta avanza: en 15 minutos recorre un cuarto de la hora, 7.5° más allá del 3.'],
+ ['Tres cajas tienen etiquetas: "Rojos", "Azules" y "Mixtos". Todas están mal puestas. Sacando un solo botón sin mirar, ¿de qué caja lo sacas para corregir todas las etiquetas?','De la caja "Mixtos"',['De la caja "Rojos"','De la caja "Azules"','No se puede'],'"Mixtos" no puede ser mixta: si sacas un rojo, es la de rojos. Las otras dos se deducen solas.'],
+ ['El papá de María tiene 5 hijas: Nana, Nene, Nini y Nono. ¿Cómo se llama la quinta?','María',['Nunu','Nina','No se sabe'],'Lo dice al inicio: es el papá de María.'],
+ ['Un hombre ve un retrato y dice: "No tengo hermanos, pero el padre de ese hombre es el hijo de mi padre". ¿Quién está en el retrato?','Su hijo',['Él mismo','Su papá','Su sobrino'],'"El hijo de mi padre", sin hermanos, es él mismo. Entonces el padre del retratado es él.'],
+ ['Si ayer fuera mañana, hoy sería viernes. ¿Qué día es hoy?','Domingo',['Miércoles','Sábado','Jueves'],'Si ayer (sábado) fuera mañana, hoy sería el día antes del sábado: viernes. Hoy es domingo.'],
+ ['Un caracol está en el fondo de un pozo de 10 m. De día sube 3 m y de noche resbala 2 m. ¿En cuántos días sale?','8 días',['10 días','7 días','9 días'],'Avanza 1 m por día. Al iniciar el día 8 está a 7 m y ese día sube 3 m: sale sin resbalar.'],
+ ['Caminas 4 km a 4 km/h y regresas por el mismo camino a 6 km/h. ¿Cuál fue tu velocidad promedio?','4.8 km/h',['5 km/h','5.2 km/h','4.5 km/h'],'8 km en 1 h + 40 min = 1.67 h. 8 ÷ 1.67 = 4.8 km/h.'],
+ ['Un tren de 1 km de largo va a 60 km/h y entra a un túnel de 1 km. ¿Cuánto tarda en salir por completo?','2 minutos',['1 minuto','1.5 minutos','3 minutos'],'Debe recorrer el túnel más su propio largo: 2 km a 1 km por minuto.'],
+ ['¿Cuál no pertenece al grupo? 3, 5, 7, 9, 11, 13','9',['3','11','13'],'Todos son primos menos el 9 (3 × 3).'],
+ ['Un ladrillo pesa 1 kg más medio ladrillo. ¿Cuánto pesa el ladrillo?','2 kg',['1.5 kg','1 kg','3 kg'],'Si medio ladrillo pesa 1 kg, el ladrillo completo pesa 2 kg.'],
+ ['En una carrera rebasas a quien va en segundo lugar. ¿En qué lugar vas?','Segundo',['Primero','Tercero','Depende'],'Tomas su lugar: el segundo.'],
+ ['Ana es más alta que Bea. Carla es más baja que Bea. Dani es más alta que Ana. ¿Quién es la segunda más alta?','Ana',['Bea','Dani','Carla'],'Orden: Dani, Ana, Bea, Carla.'],
+ ['Si hoy es miércoles, ¿qué día será dentro de 100 días?','Viernes',['Jueves','Sábado','Miércoles'],'100 ÷ 7 = 14 semanas y sobran 2 días: miércoles + 2 = viernes.'],
+ ['Te dan 3 pastillas y debes tomar una cada media hora. ¿Cuánto tiempo duran?','1 hora',['1.5 horas','2 horas','30 minutos'],'La primera al minuto 0, la segunda a los 30 y la tercera a los 60.'],
+ ['¿Cuántas veces puedes restarle 5 a 25?','Una vez',['5 veces','4 veces','Infinitas'],'Después de la primera ya no le restas a 25, sino a 20.'],
+ ['¿Cuánto es la mitad de dos más dos?','3',['2','4','1'],'Primero la mitad de dos (1) y luego más dos: 3.'],
+ ['Una botella con corcho cuesta $1.10. La botella cuesta $1 más que el corcho. ¿Cuánto cuesta el corcho?','5 centavos',['10 centavos','1 centavo','15 centavos'],'Corcho 0.05 + botella 1.05 = 1.10.'],
+ ['En un cajón a oscuras hay 10 calcetines negros y 10 blancos. ¿Cuántos tienes que sacar para asegurar un par del mismo color?','3',['2','11','10'],'Con 3, al menos dos son del mismo color.'],
+ ['Un número multiplicado por sí mismo da 144 y sumado consigo mismo da 24. ¿Qué número es?','12',['14','11','72'],'12 × 12 = 144 y 12 + 12 = 24.'],
+ ['Si 3 gatos atrapan 3 ratones en 3 minutos, ¿cuántos gatos atrapan 100 ratones en 100 minutos?','3 gatos',['100 gatos','33 gatos','10 gatos'],'Cada gato atrapa un ratón cada 3 minutos: 3 gatos atrapan 100 en 100 minutos.']];
+const WORDS=[['PERSEVERANCIA','Seguir aunque cueste'],['RESILIENCIA','Capacidad de levantarte después de caer'],['EQUILIBRIO','Lo que necesitas para sostenerte en una pierna'],
+ ['METAMORFOSIS','Lo que vive la oruga'],['CALEIDOSCOPIO','Tubo de colores y espejos'],['ARQUEOLOGIA','Estudia lo que dejaron los antiguos'],['LABERINTO','Camino con muchas salidas falsas'],
+ ['CONSTELACION','Grupo de estrellas con nombre'],['MURCIELAGO','Tiene todas las vocales'],['ESTRATEGIA','Plan para ganar'],['INTROSPECCION','Mirar hacia dentro de ti'],
+ ['MEDITACION','Práctica de calmar la mente'],['ASTRONOMIA','Ciencia del cielo'],['CARTOGRAFIA','Arte de hacer mapas'],['SERENDIPIA','Hallazgo afortunado que no buscabas'],
+ ['PALINDROMO','Se lee igual al derecho y al revés'],['ARTICULACION','Donde se unen dos huesos'],['VERTEBRAS','Tu columna está hecha de ellas'],['PROPIOCEPCION','Sentido de dónde está tu cuerpo'],['HIDRATACION','Tomar suficiente agua']];
+function sudokuGen(R){const ok=(g,i,v)=>{const r=(i/9)|0,c=i%9;for(let k=0;k<9;k++){if(g[r*9+k]===v||g[k*9+c]===v)return false}const br=r-r%3,bc=c-c%3;for(let x=0;x<3;x++)for(let y=0;y<3;y++)if(g[(br+x)*9+bc+y]===v)return false;return true};
+  const g=Array(81).fill(0);const fill=i=>{if(i===81)return true;for(const v of shuffle([1,2,3,4,5,6,7,8,9],R)){if(ok(g,i,v)){g[i]=v;if(fill(i+1))return true;g[i]=0}}return false};fill(0);
+  const sol=[...g];
+  const count=(g,lim)=>{let best=-1,bc=null;for(let i=0;i<81;i++){if(g[i])continue;const c=[];for(let v=1;v<=9;v++)if(ok(g,i,v))c.push(v);if(!c.length)return 0;if(!bc||c.length<bc.length){best=i;bc=c;if(c.length===1)break}}
+    if(best<0)return 1;let n=0;for(const v of bc){g[best]=v;n+=count(g,lim-n);g[best]=0;if(n>=lim)break}return n};
+  const puz=[...sol];let removed=0;for(const i of shuffle([...Array(81).keys()],R)){if(removed>=52)break;const v=puz[i];puz[i]=0;if(count([...puz],2)!==1)puz[i]=v;else removed++}
+  return{sol,puz}}
+function cifrasGen(R){for(let t=0;t<200;t++){const pool=[1,2,3,4,5,6,7,8,9,10,25,50,75];const nums=Array.from({length:5},()=>pool[Math.floor(R()*pool.length)]);
+  let arr=[...nums];while(arr.length>1){const i=Math.floor(R()*arr.length);let j=Math.floor(R()*(arr.length-1));if(j>=i)j++;const a=arr[i],b=arr[j];const ops=[a+b,a*b];if(a>b)ops.push(a-b);if(b&&a%b===0&&b>1)ops.push(a/b);
+    const v=ops[Math.floor(R()*ops.length)];arr=arr.filter((_,k)=>k!==i&&k!==j);arr.push(v)}
+  const T=arr[0];if(T>=101&&T<=999&&!nums.includes(T))return{nums,target:T}}return{nums:[25,4,3,7,2],target:181}}
 function buildGame(d){const g=gameOf(d),R=rng(hashS(d+'seed'));
-  if(g.id==='sudoku'){let b=[[1,2,3,4],[3,4,1,2],[2,1,4,3],[4,3,2,1]];const m=shuffle([1,2,3,4],R);b=b.map(r=>r.map(v=>m[v-1]));
-    if(R()<.5)b=[b[1],b[0],b[2],b[3]];if(R()<.5)b=[b[0],b[1],b[3],b[2]];if(R()<.5)b=[b[2],b[3],b[0],b[1]];
-    if(R()<.5)b=b.map(r=>[r[1],r[0],r[2],r[3]]);if(R()<.5)b=b.map(r=>[r[0],r[1],r[3],r[2]]);
-    const sol=b.flat();const hide=shuffle([...Array(16).keys()],R).slice(0,8);return{g,sol,hide,cur:sol.map((v,i)=>hide.includes(i)?0:v),sel:hide[0]}}
-  if(g.id==='acertijo'){const q=RIDDLES[hashS(d+'r')%RIDDLES.length];return{g,q:q[0],ok:q[1],opts:shuffle([q[1],...q[2]],R),tries:0}}
-  if(g.id==='palabra'){const w=WORDS[hashS(d+'w')%WORDS.length];let L=shuffle([...w[0]],R);if(L.join('')===w[0])L=L.reverse();return{g,word:w[0],clue:w[1],letters:L,used:[],ans:''}}
-  const cards=shuffle([...PETS.map(p=>'p:'+p.id),'m:0','m:1'].flatMap(x=>[x,x]),R);return{g,cards,up:[],done:[],moves:0}}
+  if(g.id==='sudoku'){const{sol,puz}=sudokuGen(R);return{id:g.id,sol,fix:puz.map(v=>!!v),cur:[...puz],sel:puz.indexOf(0),check:false}}
+  if(g.id==='acertijo'){const q=RIDDLES[hashS(d+'r')%RIDDLES.length];return{id:g.id,q:q[0],ok:q[1],why:q[3],opts:shuffle([q[1],...q[2]],R),tries:0}}
+  if(g.id==='palabra'){const w=WORDS[hashS(d+'w')%WORDS.length];let L=shuffle([...w[0]],R);if(L.join('')===w[0])L=L.reverse();return{id:g.id,word:w[0],clue:w[1],letters:L,used:[],ans:''}}
+  if(g.id==='memo'){const all=[];for(let v=0;v<3;v++)for(let p=0;p<MPAL.length;p++)all.push(v+'-'+p);const pick=shuffle(all,R).slice(0,10);return{id:g.id,cards:shuffle(pick.flatMap(x=>[x,x]),R),up:[],done:[],moves:0}}
+  const c=cifrasGen(R);return{id:g.id,target:c.target,start:c.nums,items:c.nums.map((v,i)=>({v,k:i})),hist:[],sel:null,op:null,next:c.nums.length}}
 let GS=null,GOV=null;
-function gameCardHTML(){const t=today(),g=gameOf(t),done=S.games&&S.games[t]&&S.games[t].ok;
-  return `<div class="box"><h3>JUEGO MENTAL DEL DÍA · +${GAME_COINS} MONEDAS</h3><div class="game-card"><div class="brain">${g.id==='memo'?petArt(PETS[2],50):g.id==='sudoku'?'<span class="disp" style="font-size:22px;color:var(--sky)">1·4</span>':g.id==='palabra'?'<span class="disp" style="font-size:22px;color:var(--coin)">ABC</span>':mask(0,1,30)}</div>
-   <div><div style="font-weight:600;font-size:18px">${g.n}</div><div class="small muted">${done?'¡Resuelto! Mañana hay otro juego.':g.d}</div>
-   <button class="btn sm ${done?'ghost':'gold'}" id="play" style="margin-top:10px">${done?'VER OTRA VEZ':'JUGAR'}</button></div></div></div>`}
-function openGame(){SFX.tap();GS=buildGame(today());GOV=document.createElement('div');GOV.className='ov';GOV.setAttribute('role','dialog');GOV.setAttribute('aria-modal','true');document.body.appendChild(GOV);drawGame()}
+const persistGame=()=>{const t=today();if(S.games&&S.games[t]&&S.games[t].ok)return;S.gprog={d:t,G:Object.assign({},GS,{lock:false})};save()};
+function gameCardHTML(){const t=today(),g=gameOf(t),done=S.games&&S.games[t]&&S.games[t].ok,mid=!done&&S.gprog&&S.gprog.d===t;
+  const ic={sudoku:'<span class="disp" style="font-size:20px;color:var(--sky)">9×9</span>',palabra:'<span class="disp" style="font-size:18px;color:var(--coin)">ABC</span>',cifras:'<span class="disp" style="font-size:18px;color:var(--green)">+×÷</span>',memo:mask(1,3,30),acertijo:mask(0,1,30)}[g.id];
+  return `<div class="box"><h3>JUEGO MENTAL DEL DÍA · +${GAME_COINS} MONEDAS</h3><div class="game-card"><div class="brain">${ic}</div>
+   <div><div style="font-weight:600;font-size:18px">${g.n}</div><div class="small muted">${done?'¡Resuelto! Mañana hay otro reto.':g.d}</div>
+   <button class="btn sm ${done?'ghost':'gold'}" id="play" style="margin-top:10px">${done?'JUGAR DE NUEVO':mid?'CONTINUAR':'JUGAR'}</button></div></div></div>`}
+function openGame(){SFX.tap();const t=today(),done=S.games&&S.games[t]&&S.games[t].ok;
+  GS=(!done&&S.gprog&&S.gprog.d===t)?S.gprog.G:buildGame(t);
+  GOV=document.createElement('div');GOV.className='ov';GOV.setAttribute('role','dialog');GOV.setAttribute('aria-modal','true');document.body.appendChild(GOV);drawGame()}
 function closeGame(){if(GOV){GOV.remove();GOV=null}render()}
-function drawGame(){const G=GS,g=G.g;let body='';
-  if(g.id==='sudoku')body=`<div class="sgrid">${G.cur.map((v,i)=>{const fix=!G.hide.includes(i);const full=G.cur.every(x=>x);return `<button data-c="${i}" class="${fix?'fix':''} ${G.sel===i&&!fix?'sel':''} ${full&&!fix&&v!==G.sol[i]?'bad':''}" aria-label="Casilla ${i+1}">${v||''}</button>`}).join('')}</div>
-    <div class="pad">${[1,2,3,4].map(n=>`<button data-n="${n}">${n}</button>`).join('')}<button data-n="0" aria-label="Borrar">⌫</button></div>
-    ${G.cur.every(x=>x)&&G.cur.some((v,i)=>v!==G.sol[i])?'<div class="note">Casi. Los números en rojo no van ahí. Revisa fila, columna y cuadro.</div>':''}`;
-  else if(g.id==='acertijo')body=`<div class="center">${mask(hashS(today())%3,hashS(today()),56)}</div><div class="riddle">${G.q}</div>
-    <div class="choices">${G.opts.map(o=>`<button class="opt" data-o="${esc(o)}">${esc(o)}</button>`).join('')}</div>${G.tries?'<div class="note">Esa no es. ¡Inténtalo otra vez!</div>':''}`;
-  else if(g.id==='palabra')body=`<div class="center small muted">Pista: ${G.clue}</div><div class="ans" id="ans">${[...G.word].map((_,i)=>`<span>${G.ans[i]||''}</span>`).join('')}</div>
+const opSym={'+':'+','-':'−','*':'×','/':'÷'};
+function drawGame(){const G=GS,g=GAMES.find(x=>x.id===G.id);let body='';
+  if(G.id==='sudoku'){const full=G.cur.every(x=>x);
+    body=`<div class="s9">${G.cur.map((v,i)=>{const r=(i/9)|0,c=i%9,bad=(G.check||full)&&!G.fix[i]&&v&&v!==G.sol[i];const same=v&&G.cur[G.sel]===v;
+      return `<button data-c="${i}" class="${G.fix[i]?'fix':''} ${G.sel===i?'sel':''} ${same&&G.sel!==i?'same':''} ${bad?'bad':''} ${c===2||c===5?'br':''} ${r===2||r===5?'bb':''}" aria-label="Fila ${r+1} columna ${c+1}">${v||''}</button>`}).join('')}</div>
+    <div class="pad9">${[1,2,3,4,5,6,7,8,9].map(n=>`<button data-n="${n}">${n}</button>`).join('')}<button data-n="0" aria-label="Borrar">⌫</button></div>
+    <div class="row" style="justify-content:center;margin-top:12px"><button class="btn sm ghost" id="g-check">${G.check?'OCULTAR ERRORES':'REVISAR ERRORES'}</button></div>
+    ${full&&G.cur.some((v,i)=>v!==G.sol[i])?'<div class="note">Está lleno pero hay errores (en rojo).</div>':''}`}
+  else if(G.id==='acertijo')body=`<div class="riddle">${G.q}</div><div class="choices">${G.opts.map(o=>`<button class="opt" data-o="${esc(o)}">${esc(o)}</button>`).join('')}</div>${G.tries?`<div class="note">Esa no es (${G.tries} ${G.tries>1?'intentos':'intento'}). Léelo otra vez con calma.</div>`:''}`;
+  else if(G.id==='palabra')body=`<div class="center small muted">Pista: ${G.clue} · ${G.word.length} letras</div><div class="ans" id="ans">${[...G.word].map((_,i)=>`<span>${G.ans[i]||''}</span>`).join('')}</div>
     <div class="tiles">${G.letters.map((l,i)=>`<button data-l="${i}" ${G.used.includes(i)?'disabled':''}>${l}</button>`).join('')}</div>
-    <div class="row" style="justify-content:center;margin-top:14px"><button class="btn sm ghost" id="g-back">BORRAR LETRA</button></div>`;
-  else body=`<div class="memo">${G.cards.map((c,i)=>{const show=G.up.includes(i)||G.done.includes(i);let art='';
-     if(show){if(c[0]==='p')art=petArt(PETS.find(p=>p.id===c.slice(2)),60);else art=mask(+c.slice(2)*2,+c.slice(2)*3+1,34)}
-     return `<button data-m="${i}" class="${G.done.includes(i)?'ok':show?'up':''}" aria-label="Carta ${i+1}">${art}</button>`}).join('')}</div>
-    <div class="center small muted" style="margin-top:10px">Movimientos: ${G.moves}</div>`;
+    <div class="row" style="justify-content:center;margin-top:14px"><button class="btn sm ghost" id="g-back">BORRAR LETRA</button><button class="btn sm ghost" id="g-clear">EMPEZAR DE NUEVO</button></div>`;
+  else if(G.id==='memo')body=`<div class="memo m5">${G.cards.map((c,i)=>{const show=G.up.includes(i)||G.done.includes(i);const[v,p]=c.split('-').map(Number);
+     return `<button data-m="${i}" class="${G.done.includes(i)?'ok':show?'up':''}" aria-label="Carta ${i+1}">${show?mask(v,p,30):''}</button>`}).join('')}</div>
+    <div class="center small muted" style="margin-top:10px">Movimientos: ${G.moves} · Parejas: ${G.done.length/2}/10</div>`;
+  else body=`<div class="center"><div class="small muted">LLEGA A</div><div class="disp" style="font-size:44px;color:var(--coin)">${G.target}</div></div>
+    <div class="tiles" style="margin-top:14px">${G.items.map(it=>`<button data-it="${it.k}" style="width:auto;min-width:56px;padding:0 10px;${G.sel===it.k?'background:var(--cream);':''}">${it.v}</button>`).join('')}</div>
+    <div class="pad" style="grid-template-columns:repeat(4,1fr)">${['+','-','*','/'].map(o=>`<button data-op="${o}" style="${G.op===o?'background:var(--coin);color:var(--ink)':''}">${opSym[o]}</button>`).join('')}</div>
+    <div class="small muted" style="text-align:center;margin-top:10px">${G.sel==null?'Toca un número.':G.op==null?'Ahora elige una operación.':'Toca el segundo número.'} Solo resultados enteros y positivos.</div>
+    ${G.hist.length?`<div class="note">${G.hist.map(h=>h.txt).join('<br>')}</div>`:''}
+    <div class="row" style="justify-content:center;margin-top:12px"><button class="btn sm ghost" id="c-undo" ${G.hist.length?'':'disabled'}>DESHACER</button><button class="btn sm ghost" id="c-reset">REINICIAR</button></div>`;
   GOV.innerHTML=`<div class="box"><h2>${g.n.toUpperCase()}</h2><div class="small muted" style="text-align:center;margin:-6px 0 14px">${g.d}</div>${body}
-   <div class="stack" style="margin-top:18px"><button class="btn ghost" id="g-close">CERRAR</button></div></div>`;
-  GOV.querySelector('#g-close').onclick=closeGame;
-  const q=s=>GOV.querySelectorAll(s);
-  q('[data-c]').forEach(b=>b.onclick=()=>{const i=+b.dataset.c;if(!G.hide.includes(i))return;G.sel=i;SFX.tap();drawGame()});
-  q('[data-n]').forEach(b=>b.onclick=()=>{if(G.sel==null)return;G.cur[G.sel]=+b.dataset.n;SFX.tap();
-    const nx=G.hide.find(i=>!G.cur[i]);if(nx!=null&&+b.dataset.n)G.sel=nx;
+   <div class="stack" style="margin-top:18px"><button class="btn ghost" id="g-close" data-fill="1">${G.id==='sudoku'?'GUARDAR Y CERRAR':'CERRAR'}</button></div></div>`;
+  fillPix(GOV);const q=s=>GOV.querySelectorAll(s),one=s=>GOV.querySelector(s);
+  one('#g-close').onclick=()=>{persistGame();closeGame()};
+  q('[data-c]').forEach(b=>b.onclick=()=>{G.sel=+b.dataset.c;SFX.tap();drawGame()});
+  q('[data-n]').forEach(b=>b.onclick=()=>{if(G.sel==null||G.fix[G.sel])return;G.cur[G.sel]=+b.dataset.n;SFX.tap();persistGame();
     if(G.cur.every((v,i)=>v===G.sol[i]))return winGame();drawGame()});
-  q('[data-o]').forEach(b=>b.onclick=()=>{if(b.dataset.o===G.ok)return winGame();G.tries++;SFX.boss();drawGame()});
+  const ck=one('#g-check');ck&&(ck.onclick=()=>{G.check=!G.check;drawGame()});
+  q('[data-o]').forEach(b=>b.onclick=()=>{if(b.dataset.o===G.ok)return winGame(`<div class="note">${G.why}</div>`);G.tries++;SFX.boss();persistGame();drawGame()});
   q('[data-l]').forEach(b=>b.onclick=()=>{const i=+b.dataset.l;G.used.push(i);G.ans+=G.letters[i];SFX.tap();
-    if(G.ans.length===G.word.length){if(G.ans===G.word)return winGame();drawGame();const a=GOV.querySelector('#ans');a.classList.add('shake');SFX.boss();setTimeout(()=>{G.used=[];G.ans='';drawGame()},700);return}drawGame()});
-  const bk=GOV.querySelector('#g-back');bk&&(bk.onclick=()=>{G.used.pop();G.ans=G.ans.slice(0,-1);drawGame()});
+    if(G.ans.length===G.word.length){if(G.ans===G.word)return winGame();drawGame();one('#ans').classList.add('shake');SFX.boss();setTimeout(()=>{G.used=[];G.ans='';GOV&&drawGame()},700);return}persistGame();drawGame()});
+  const bk=one('#g-back');bk&&(bk.onclick=()=>{G.used.pop();G.ans=G.ans.slice(0,-1);drawGame()});
+  const cl=one('#g-clear');cl&&(cl.onclick=()=>{G.used=[];G.ans='';drawGame()});
   q('[data-m]').forEach(b=>b.onclick=()=>{const i=+b.dataset.m;if(G.lock||G.up.includes(i)||G.done.includes(i))return;G.up.push(i);SFX.tap();
-    if(G.up.length===2){G.moves++;const[a,c]=G.up;if(G.cards[a]===G.cards[c]){G.done.push(a,c);G.up=[];SFX.coin();if(G.done.length===G.cards.length){drawGame();return setTimeout(winGame,500)}}
-      else{G.lock=true;setTimeout(()=>{G.up=[];G.lock=false;GOV&&drawGame()},800)}}drawGame()})}
-function winGame(){const t=today();const first=!(S.games&&S.games[t]&&S.games[t].ok);S.games=S.games||{};S.games[t]={id:GS.g.id,ok:true};save();
+    if(G.up.length===2){G.moves++;const[a,c]=G.up;if(G.cards[a]===G.cards[c]){G.done.push(a,c);G.up=[];SFX.coin();persistGame();if(G.done.length===G.cards.length){drawGame();return setTimeout(()=>winGame(`<div class="note">Lo lograste en ${G.moves} movimientos.</div>`),500)}}
+      else{G.lock=true;setTimeout(()=>{G.up=[];G.lock=false;GOV&&drawGame()},900)}}drawGame()});
+  q('[data-it]').forEach(b=>b.onclick=()=>{const k=+b.dataset.it;SFX.tap();
+    if(G.sel==null||G.op==null||G.sel===k){G.sel=G.sel===k?null:k;G.op=null;return drawGame()}
+    const A=G.items.find(x=>x.k===G.sel),B=G.items.find(x=>x.k===k);let v;
+    if(G.op==='+')v=A.v+B.v;else if(G.op==='*')v=A.v*B.v;else if(G.op==='-')v=A.v-B.v;else v=B.v&&A.v%B.v===0?A.v/B.v:null;
+    if(v==null||v<=0){toast(G.op==='/'?'Esa división no da exacto':'El resultado tiene que ser positivo');G.op=null;return drawGame()}
+    G.hist.push({items:JSON.parse(JSON.stringify(G.items)),txt:`${A.v} ${opSym[G.op]} ${B.v} = ${v}`});
+    G.items=G.items.filter(x=>x!==A&&x!==B);const nk=G.next++;G.items.push({v,k:nk});G.sel=nk;G.op=null;persistGame();
+    if(v===G.target)return winGame(`<div class="note">${G.hist.map(h=>h.txt).join('<br>')}</div>`);drawGame()});
+  q('[data-op]').forEach(b=>b.onclick=()=>{if(G.sel==null){toast('Primero toca un número');return}G.op=b.dataset.op;SFX.tap();drawGame()});
+  const un=one('#c-undo');un&&(un.onclick=()=>{const h=G.hist.pop();if(h){G.items=h.items;G.sel=null;G.op=null}drawGame()});
+  const rs=one('#c-reset');rs&&(rs.onclick=()=>{G.items=G.start.map((v,i)=>({v,k:i}));G.hist=[];G.sel=null;G.op=null;G.next=G.start.length;drawGame()})}
+function winGame(extra=''){const t=today();const first=!(S.games&&S.games[t]&&S.games[t].ok);S.games=S.games||{};S.games[t]={id:GS.id,ok:true};delete S.gprog;save();
   if(GOV){GOV.remove();GOV=null}SFX.level();confetti(60);const pp=randPet();
-  modal(`<div class="center">${petArt(pp,96)}<h2>${first?'¡+'+GAME_COINS+' MONEDAS!':'¡RESUELTO OTRA VEZ!'}</h2><div>${first?'Resolviste el juego mental de hoy.':'Las monedas de hoy ya las tenías. Mañana hay otro juego.'}</div><div class="small muted">${esc(petName(pp))} te aplaude por tu cerebrito.</div></div>`,[{t:'¡GENIAL!',c:'gold',fn:()=>{checkAch();render()}}])}
+  modal(`<div class="center">${petArt(pp,96)}<h2>${first?'¡+'+GAME_COINS+' MONEDAS!':'¡RESUELTO OTRA VEZ!'}</h2><div>${first?'Resolviste el reto mental de hoy.':'Las monedas de hoy ya las tenías. Mañana hay otro reto.'}</div></div>${extra}<div class="small muted" style="text-align:center;margin-top:10px">${esc(petName(pp))} te aplaude.</div>`,[{t:'¡GENIAL!',c:'gold',fn:()=>{checkAch();render()}}])}
 
 /* ============ ESTADO ============ */
 function fresh(){return{v:1,name:'Paola',start:today(),days:{},blocks:{},spent:[],sound:true,achSeen:[],seenLevel:0,petNames:{},games:{},
@@ -661,7 +736,7 @@ function modal(html,btns=[{t:'¡SIGUIENTE!',c:'gold'}],onOpen){QUEUE.push({html,
 function showNext(){const m=QUEUE[0];if(!m)return;const ov=document.createElement('div');ov.className='ov';ov.setAttribute('role','dialog');ov.setAttribute('aria-modal','true');
   ov.innerHTML=`<div class="box">${m.html}<div class="stack" style="margin-top:18px">${m.btns.map((b,i)=>`<button class="btn ${b.c||''}" data-i="${i}">${b.t}</button>`).join('')}</div></div>`;
   document.body.appendChild(ov);ov.querySelectorAll('[data-i]').forEach(el=>el.onclick=()=>{const b=m.btns[+el.dataset.i];ov.remove();QUEUE.shift();if(b.fn)b.fn();showNext()});
-  const f=ov.querySelector('[data-i]');f&&f.focus();m.onOpen&&m.onOpen(ov)}
+  fillPix(ov);const f=ov.querySelector('[data-i]');f&&f.focus();m.onOpen&&m.onOpen(ov)}
 const randPet=()=>PETS[Math.floor(Math.random()*PETS.length)];
 
 function hud(st){return `${DEMO?'<div class="demo">VISTA PREVIA · DATOS DE EJEMPLO</div>':''}<div class="hud">
@@ -680,7 +755,7 @@ function nav(){const it=[['map','MAPA'],['add','REGISTRAR'],['chest','COFRE'],['
 function go(v,opt){VIEW=v;if(v==='add'){FDATE=(opt&&opt.date)||today();FORM=JSON.parse(JSON.stringify(S.days[FDATE]||{}))}render();window.scrollTo(0,0)}
 function render(){const st=calc();if(st.level<S.seenLevel){S.seenLevel=st.level;save()}const a=$('#app');
   a.innerHTML=hud(st)+(VIEW==='map'?mapView(st):VIEW==='add'?addView(st):VIEW==='chest'?chestView(st):logView(st));
-  nav();$('#gear').onclick=settings;
+  fillPix(a);nav();$('#gear').onclick=settings;
   ({map:bindMap,add:bindAdd,chest:bindChest,log:bindLog})[VIEW](st)}
 
 /* ============ ESCENA ============ */
@@ -694,7 +769,7 @@ function deco(kind,x,y,W){
   if(kind==='bell')return `<g transform="translate(${x-6} ${y-13}) scale(.55)">${itemInner('bell','#ffcc33','#c98a12')}</g>`;
   return `<g transform="translate(${x-6} ${y-13}) scale(.55)" class="twinkle">${itemInner('star','#ffcc33','#c98a12')}</g>`}
 function totem(x,y,v,p,s=.5){return `<g transform="translate(${x} ${y})"><rect x="-1.6" y="-16" width="3.2" height="16" rx="1" fill="#6b3f1e" stroke="${K}" stroke-width=".6"/><g transform="translate(${-20*s} ${-16-56*s}) scale(${s})">${maskInner(v,MPAL[p])}</g></g>`}
-function scene(wi,node){const W=WORLDS[wi];let s=`<svg viewBox="0 0 320 200" role="img" aria-label="Mapa del mundo ${wi+1}, ${W.name}">`;
+function scene(wi,node){const W=WORLDS[wi];let s='';
   s+=`<rect width="320" height="200" fill="${W.sky}"/>`;
   if(W.night){for(let i=0;i<28;i++){const x=(i*73)%317,y=(i*37)%74+4;s+=`<circle class="${i%3?'':'twinkle'}" cx="${x}" cy="${y}" r="${i%4?0.9:1.4}" fill="#fff"/>`}
     s+=`<circle cx="268" cy="34" r="15" fill="#fff4cf"/><circle cx="262" cy="30" r="3" fill="#e9dcae"/><circle cx="272" cy="40" r="2" fill="#e9dcae"/>`}
@@ -719,14 +794,16 @@ function scene(wi,node){const W=WORLDS[wi];let s=`<svg viewBox="0 0 320 200" rol
    <rect x="17.4" y="-8" width="1.4" height="14" fill="#fff"/><path d="M18.8 -8Q24 -6 28 -8V-2Q24 0 18.8 -2Z" fill="#ffcc33" stroke="${K}" stroke-width=".6"/></g>`;
   NODES.forEach(([x,y],i)=>{if(i===LPW-1)return;
     if(i<node)s+=`<ellipse cx="${x}" cy="${y+1}" rx="7" ry="3" fill="rgba(13,10,36,.3)"/><rect x="${x-.8}" y="${y-17}" width="1.6" height="17" fill="#fff"/><path d="M${x+.8} ${y-17}Q${x+6} ${y-15} ${x+10} ${y-17}V${y-11}Q${x+6} ${y-9} ${x+.8} ${y-11}Z" fill="#ffcc33" stroke="${K}" stroke-width=".6"/>`;
-    else s+=`<ellipse cx="${x}" cy="${y+1}" rx="8" ry="4.4" fill="#0d0a24"/><ellipse cx="${x}" cy="${y}" rx="7" ry="3.6" fill="${i===node?'#ffcc33':'#6a62a8'}"/>${i>node?`<text x="${x}" y="${y+14}" font-size="7" fill="#0d0a24" text-anchor="middle" font-family="Bungee,sans-serif" opacity=".55">${wi+1}-${i+1}</text>`:''}`});
-  const[hx,hy]=NODES[node];
-  // Paola + su equipo: 2 perritas viejitas y 2 gatitos
-  s+=`<g id="hero" style="transform:translate(${hx-12}px,${hy-36}px)">
-   ${petG(PETS[0],-24,19,.42,true)}
-   <g class="bob"><g class="f1"><g transform="scale(.6)">${heroArt(1)}</g></g><g class="f2" style="display:none"><g transform="scale(.6)">${heroArt(2)}</g></g></g>
-   ${petG(PETS[2],22,22,.36,true)}${petG(PETS[3],34,26,.33,true)}</g>`;
-  return s+'</svg>'}
+    else s+=`<ellipse cx="${x}" cy="${y+1}" rx="8" ry="4.4" fill="#0d0a24"/><ellipse cx="${x}" cy="${y}" rx="7" ry="3.6" fill="${i===node?'#ffcc33':'#6a62a8'}"/>`});
+  const[hx,hy]=NODES[node];const D=.75; // densidad: 240 pixeles para 320 de ancho
+  const spr=(vw,vh,inner,x,y,w,cls='',flip=false)=>`<div class="spr ${cls}" style="left:${U(x)};top:${U(y)};width:${U(w)}${flip?';transform:scaleX(-1)':''}">${pixImg(vw,vh,inner,w,Math.round(w*D),'sp')}</div>`;
+  const pet=(p,x,y,sc)=>{const P=petInner(p);return spr(P.vw,P.vh,P.g,x,y,P.vw*sc,'',true)};
+  // Paola + su equipo: Abuelita Calabaza y los 2 gatitos (Hanna se queda en su maceta)
+  const hero=`<div id="hero" style="left:${U(hx-15)};top:${U(hy-45)}">${pet(PETS[0],-30,24,.52)}
+    <div class="bob">${spr(40,60,heroArt(1),0,0,30,'f1')}${spr(40,60,heroArt(2),0,0,30,'f2')}</div>
+    ${pet(PETS[2],27,28,.45)}${pet(PETS[3],42,33,.41)}</div>`;
+  return `<div class="stage" role="img" aria-label="Mapa del mundo ${wi+1}, ${W.name}">${pixImg(320,200,s,320,240,'bg')}${hero}</div>`}
+const U=n=>`calc(${n} * 100cqw / 320)`;
 
 /* ============ MAPA ============ */
 function mapView(st){const pending=st.level>S.seenLevel;const shown=pending?posOf(S.seenLevel):posOf(st.level);
@@ -775,7 +852,7 @@ function walkTo(st){ANIM=true;const from=posOf(S.seenLevel),to=posOf(st.level);
   const hero=$('#hero');if(!hero){ANIM=false;return}
   const sameWorld=from.w===to.w;const target=sameWorld?to.n:LPW-1;let n=from.n;
   const step=()=>{if(n>=target){finish();return}n++;const[x,y]=NODES[n];const f1=hero.querySelector('.f1'),f2=hero.querySelector('.f2');
-    f1.style.display='none';f2.style.display='';SFX.jump();hero.style.transform=`translate(${x-12}px,${y-36}px)`;setTimeout(()=>{f1.style.display='';f2.style.display='none';step()},560)};
+    f1.style.display='none';f2.style.display='block';SFX.jump();hero.style.left=U(x-15);hero.style.top=U(y-45);setTimeout(()=>{f1.style.display='';f2.style.display='none';step()},560)};
   const finish=()=>{const old=S.seenLevel;S.seenLevel=st.level;save();ANIM=false;SFX.level();confetti(50);
     if(!sameWorld){banner(`¡MUNDO ${from.w+1} SUPERADO!`,1700);setTimeout(()=>{modal(`<div class="center">${sv(40,56,heroArt(1),56)}<h2>¡BIENVENIDA AL MUNDO ${to.w+1}!</h2><div>${WORLDS[to.w].name}. Nuevo paisaje, nuevo reto. Tu equipo y tú llegaron hasta aquí por tu constancia.</div></div>`,[{t:'¡A JUGAR!',c:'gold',fn:render}])},1500)}
     else{banner(st.level-old>1?`¡+${st.level-old} NIVELES!`:'¡NIVEL SUPERADO!');setTimeout(render,1500)}};
