@@ -715,13 +715,43 @@ const posOf=l=>({w:Math.min(NW-1,Math.floor(l/LPW)),n:l>=NW*LPW?LPW-1:l%LPW});
 
 /* ============ SONIDO 8-BIT ============ */
 let AC;
+/* En iPhone: que suene aunque el celular esté en silencio (se puede apagar en Ajustes) */
+try{if(navigator.audioSession)navigator.audioSession.type='playback'}catch(e){}
+function getAC(){if(!S.sound)return null;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();return AC}catch(e){return null}}
+['touchend','click'].forEach(ev=>document.addEventListener(ev,function un(){const a=getAC();if(a){const b=a.createBuffer(1,1,22050),src=a.createBufferSource();src.buffer=b;src.connect(a.destination);src.start(0)}document.removeEventListener(ev,un,true)},true));
+let NOISE=null;
+function noiseBuf(a){if(NOISE)return NOISE;const n=a.sampleRate*.6,b=a.createBuffer(1,n,a.sampleRate),d=b.getChannelData(0);for(let i=0;i<n;i++)d[i]=Math.random()*2-1;return NOISE=b}
+/* Ladrido: tono áspero que cae rápido + soplo de aire, filtrado como boca */
+function bark(t0,pitch,vol=.55){const a=getAC();if(!a)return;const t=a.currentTime+t0;
+  const out=a.createGain();out.gain.setValueAtTime(0,t);out.gain.linearRampToValueAtTime(vol,t+.012);out.gain.exponentialRampToValueAtTime(.001,t+.2);
+  const bp=a.createBiquadFilter();bp.type='bandpass';bp.Q.value=1.2;bp.frequency.setValueAtTime(1300*pitch,t);bp.frequency.exponentialRampToValueAtTime(600*pitch,t+.18);
+  const lp=a.createBiquadFilter();lp.type='lowpass';lp.frequency.value=3200;
+  const o=a.createOscillator();o.type='sawtooth';o.frequency.setValueAtTime(520*pitch,t);o.frequency.exponentialRampToValueAtTime(330*pitch,t+.05);o.frequency.exponentialRampToValueAtTime(190*pitch,t+.19);
+  const og=a.createGain();og.gain.value=.8;
+  const nz=a.createBufferSource();nz.buffer=noiseBuf(a);const ng=a.createGain();ng.gain.value=.35;
+  o.connect(og).connect(bp);nz.connect(ng).connect(bp);bp.connect(lp).connect(out).connect(a.destination);
+  o.start(t);o.stop(t+.22);nz.start(t);nz.stop(t+.22)}
+/* Maullido: voz que sube y baja ("mi-aaa-u") con boca que se abre y se cierra */
+function meowS(t0,pitch,len=.62,vol=.32){const a=getAC();if(!a)return;const t=a.currentTime+t0;
+  const o=a.createOscillator();o.type='sawtooth';
+  o.frequency.setValueAtTime(420*pitch,t);o.frequency.exponentialRampToValueAtTime(720*pitch,t+len*.25);o.frequency.exponentialRampToValueAtTime(560*pitch,t+len*.6);o.frequency.exponentialRampToValueAtTime(360*pitch,t+len);
+  const lfo=a.createOscillator();lfo.frequency.value=6;const lg=a.createGain();lg.gain.value=10*pitch;lfo.connect(lg).connect(o.frequency);
+  const f1=a.createBiquadFilter();f1.type='bandpass';f1.Q.value=3;f1.frequency.setValueAtTime(700,t);f1.frequency.exponentialRampToValueAtTime(1500,t+len*.35);f1.frequency.exponentialRampToValueAtTime(800,t+len);
+  const f2=a.createBiquadFilter();f2.type='bandpass';f2.Q.value=4;f2.frequency.setValueAtTime(2200,t);f2.frequency.exponentialRampToValueAtTime(2900,t+len*.35);f2.frequency.exponentialRampToValueAtTime(1900,t+len);
+  const g2=a.createGain();g2.gain.value=.45;
+  const out=a.createGain();out.gain.setValueAtTime(0,t);out.gain.linearRampToValueAtTime(vol,t+.06);out.gain.setValueAtTime(vol,t+len*.6);out.gain.exponentialRampToValueAtTime(.001,t+len);
+  o.connect(f1).connect(out);o.connect(f2).connect(g2).connect(out);out.connect(a.destination);
+  o.start(t);o.stop(t+len+.05);lfo.start(t);lfo.stop(t+len+.05)}
+const PET_VOICE={calabaza:()=>{bark(0,.85);bark(.26,.8)},picado:()=>{bark(0,1.05,.45);bark(.22,1.1,.45);bark(.42,1.0,.4)},
+  naranja:()=>meowS(0,.95,.7),manchas:()=>{meowS(0,1.25,.4);meowS(.48,1.3,.35)}};
+function petSound(p){try{(PET_VOICE[p.id]||PET_VOICE.calabaza)()}catch(e){}}
 function tone(seq,type='square'){if(!S.sound)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();
   let t=AC.currentTime+.01;for(const[f,d]of seq){const o=AC.createOscillator(),g=AC.createGain();o.type=type;o.frequency.setValueAtTime(f,t);
   g.gain.setValueAtTime(.07,t);g.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(g).connect(AC.destination);o.start(t);o.stop(t+d+.02);t+=d*.85}}catch(e){}}
 const SFX={coin:()=>tone([[880,.06],[1175,.06],[1568,.18]]),jump:()=>tone([[330,.05],[440,.05],[587,.08]]),
   block:()=>tone([[196,.05],[262,.05],[392,.12]]),level:()=>tone([[523,.09],[659,.09],[784,.09],[1047,.09],[784,.09],[1047,.28]]),
   boss:()=>tone([[392,.1],[330,.1],[262,.1],[196,.3]],'triangle'),tap:()=>tone([[660,.03]]),buy:()=>tone([[784,.07],[988,.07],[1319,.07],[1568,.25]]),
-  woof:()=>tone([[220,.06],[180,.1]],'sawtooth'),meow:()=>tone([[700,.08],[900,.1],[650,.16]],'triangle')};
+};
 
 /* ============ UI BASE ============ */
 let VIEW='map',CHEST='premios',FORM=null,FDATE=null,ANIM=false;
@@ -817,7 +847,7 @@ function mapView(st){const pending=st.level>S.seenLevel;const shown=pending?posO
   <div class="barlbl"><span>${done?'+'+num(st.xp-NW*LPW*XPL)+' XP EXTRA':inLvl+' / '+XPL+' XP'}</span><span>${done?'':'FALTAN '+(XPL-inLvl)+' XP'}</span></div>
   <div class="stack" style="margin-top:20px">
    <button class="btn" id="go-add">${navIc('add',16)} REGISTRAR MI DÍA</button>
-   <div class="box"><h3>TU EQUIPO</h3>
+   <div class="box"><h3>TU EQUIPO <span class="muted" style="font-family:var(--f-body);font-size:13px;letter-spacing:0">· tócalos para oírlos</span></h3>
     <div class="bubble" id="bubble"><b>${esc(petName(tp))}:</b> ${line}</div>
     <div class="team">${PETS.map(p=>`<button class="pet" data-pet="${p.id}" style="background:none;border:0;padding:0" aria-label="${esc(petName(p))}">${petArt(p,78)}<span>${esc(petName(p))}</span></button>`).join('')}</div></div>
    <div class="box"><div class="duo">
@@ -839,7 +869,7 @@ function blockText(b){return b.k==='coins'?`Te tocaron <b>${b.n} monedas</b>.`:b
 function bindMap(st){$('#go-add').onclick=()=>{SFX.tap();go('add')};
   $('#qb').onclick=()=>openBlock();
   $('#play').onclick=openGame;
-  document.querySelectorAll('[data-pet]').forEach(b=>b.onclick=()=>{const p=PETS.find(x=>x.id===b.dataset.pet);p.type==='dog'?SFX.woof():SFX.meow();
+  document.querySelectorAll('[data-pet]').forEach(b=>b.onclick=()=>{const p=PETS.find(x=>x.id===b.dataset.pet);petSound(p);
     const L=petLines(p);$('#bubble').innerHTML=`<b>${esc(petName(p))}:</b> ${L[Math.floor(Math.random()*L.length)]}`});
   if(st.level>S.seenLevel&&!ANIM)walkTo(st)}
 function openBlock(){const t=today();const q=$('#qb');if(S.blocks[t]){q.classList.remove('bump');void q.offsetWidth;q.classList.add('bump');SFX.tap();toast('Ya abriste el de hoy. Vuelve mañana.');return}
@@ -911,7 +941,7 @@ function saveDay(){const before=calc();const clean={};for(const[k,v]of Object.en
   modal(`<div class="center" style="margin-bottom:6px">${petArt(pp,96)}</div><h2>¡DÍA GUARDADO!</h2>${p.parts.map((x,i)=>`<div class="line" style="animation-delay:${i*.12}s"><span>${esc(x[0])}</span><b>+${x[1]}</b></div>`).join('')}
     <div class="total"><span>MONEDAS</span><span>${gained>=0?'+':''}${gained}</span></div>
     <div class="note"><b>${esc(petName(pp))}</b> ${pp.type==='dog'?'mueve la colita: ¡bien hecho!':'ronronea de orgullo.'}</div>
-    ${clean.back>=4?'<div class="note">Hoy tu espalda pidió calma. Registrarlo también es cuidarte.</div>':''}`,[{t:'¡VER MI MAPA!',c:'gold'}],()=>{pp.type==='dog'?setTimeout(SFX.woof,500):setTimeout(SFX.meow,500)});
+    ${clean.back>=4?'<div class="note">Hoy tu espalda pidió calma. Registrarlo también es cuidarte.</div>':''}`,[{t:'¡VER MI MAPA!',c:'gold'}],()=>{setTimeout(()=>petSound(pp),500)});
   newBoss.forEach(w=>{const B=BOSSES[w%BOSSES.length];modal(`<div class="center"><div style="transform:rotate(180deg);filter:grayscale(.6)">${bossArt(B,90)}</div><h2>¡DERROTASTE A ${B.name.toUpperCase()}!</h2><div>Jefe de la semana ${w+1} vencido. +100 monedas y un trofeo para tu cofre.</div></div>`,[{t:'¡TOMA ESO!',c:'gold'}],()=>{SFX.boss();confetti(60)})});
   checkAch();
   const last=QUEUE[QUEUE.length-1].btns;const lb=last[last.length-1];const fn=lb.fn;lb.fn=()=>{fn&&fn();VIEW='map';render();window.scrollTo(0,0)}}
